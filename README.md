@@ -22,6 +22,9 @@ pnpm install
 pnpm repro
 ```
 
+`pnpm install` downloads Playwright's Chromium automatically, so the repro
+does not depend on any system Chrome or Chromium installation.
+
 To watch the browser while debugging the repro:
 
 ```bash

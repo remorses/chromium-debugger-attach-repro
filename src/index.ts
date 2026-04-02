@@ -4,7 +4,6 @@
  */
 import fs from 'node:fs'
 import http from 'node:http'
-import os from 'node:os'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { chromium, type BrowserContext, type Page } from 'playwright'
@@ -38,7 +37,6 @@ const fixtureExtensionPath = path.join(packageRoot, 'extensions', 'fixture-exten
 async function main(): Promise<void> {
   fs.mkdirSync(tmpRoot, { recursive: true })
   const userDataDir = fs.mkdtempSync(path.join(tmpRoot, 'user-data-'))
-  const launchOptions = getLaunchOptions()
   const headless = process.env.HEADFUL !== '1'
 
   let browserContext: BrowserContext | null = null
@@ -46,8 +44,8 @@ async function main(): Promise<void> {
 
   try {
     browserContext = await chromium.launchPersistentContext(userDataDir, {
+      channel: 'chromium',
       headless,
-      ...launchOptions,
       args: [
         `--disable-extensions-except=${[debuggerExtensionPath, fixtureExtensionPath].join(',')}`,
         `--load-extension=${[debuggerExtensionPath, fixtureExtensionPath].join(',')}`,
@@ -63,11 +61,7 @@ async function main(): Promise<void> {
     console.log('Fixture extension path:', fixtureExtensionPath)
     console.log('Debugger extension ID:', debuggerExtensionId)
     console.log('Fixture extension ID:', fixtureExtensionId)
-    if (launchOptions.executablePath) {
-      console.log('Browser executable:', launchOptions.executablePath)
-    } else {
-      console.log('Browser channel:', launchOptions.channel)
-    }
+    console.log('Browser:', 'Playwright channel chromium')
     console.log('Headless:', headless)
     console.log('Repro server:', server.baseUrl)
 
@@ -100,50 +94,6 @@ async function main(): Promise<void> {
     }
     fs.rmSync(userDataDir, { recursive: true, force: true })
   }
-}
-
-function getLaunchOptions(): { channel?: 'chromium'; executablePath?: string } {
-  const executablePath = findSystemChromiumExecutable()
-  if (executablePath) {
-    return { executablePath }
-  }
-  return { channel: 'chromium' }
-}
-
-function findSystemChromiumExecutable(): string | undefined {
-  const platform = os.platform()
-  const homeDir = os.homedir()
-
-  const candidates: string[] = (() => {
-    if (platform === 'darwin') {
-      return [
-        '/Applications/Chromium.app/Contents/MacOS/Chromium',
-        '/Applications/Google Chrome for Testing.app/Contents/MacOS/Google Chrome for Testing',
-        '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-      ]
-    }
-
-    if (platform === 'win32') {
-      const localAppData = process.env.LOCALAPPDATA || path.join(homeDir, 'AppData', 'Local')
-      return [
-        'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
-        'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-        path.join(localAppData, 'Google', 'Chrome', 'Application', 'chrome.exe'),
-        path.join(localAppData, 'Chromium', 'Application', 'chrome.exe'),
-      ]
-    }
-
-    return [
-      '/usr/bin/google-chrome',
-      '/usr/bin/google-chrome-stable',
-      '/usr/bin/chromium',
-      '/usr/bin/chromium-browser',
-    ]
-  })()
-
-  return candidates.find((candidate) => {
-    return fs.existsSync(candidate)
-  })
 }
 
 async function runCase({

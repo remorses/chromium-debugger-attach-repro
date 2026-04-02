@@ -6,6 +6,7 @@
   "description": "Standalone Chromium chrome.debugger attach repro for pages embedding another extension in an iframe",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "postinstall": "playwright install chromium",
     "repro": "tsx src/index.ts",
     "typecheck": "tsc -p tsconfig.json"
   },
