@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Restricted Iframe Fixture",
+  "version": "0.0.1",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAujHcgePHIjaypu/LIz5D6gpVrL3+dxyAaQxzPEzunLGQpTPXokNocrLI+ZjBM0xRx/44LIhptSk6Kz9CdbtM/FQ1unYTp5/soSe+ZyckHNxQtNiJd2/zN/3aiGqUC3IzWRDt/DLcNItKt/avyRwiHH3E0f6qBTiWP9mYeCTA2+N+qSkReURia/j78LhM9AVSGLR0Zt6QvRefa9gsTiDIVwRqEEZHFgqTgQd89wG2/2nuMy7eiOPlZlctp0hamxwu3adoIK0BoKf8hfOcnXHeo7F8Py6JxoIAh12DYwi0sVEmT52QV5wRAPL7pktngrfcH/yhNg3WYxjMYEuW6TBmPwIDAQAB",
+  "description": "Minimal extension that exposes a chrome-extension:// page for iframe repros",
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["page.html"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

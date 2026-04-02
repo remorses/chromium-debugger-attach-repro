@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Debugger Attach Repro",
+  "version": "0.0.1",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzZG8K3ksptV3erUtOlvwpFm59Y077zCHEM2I6ZQXPTFX/zbPU4SPEjEhG8qHMdIZ7CdRKW2PVZWZ8HkRCUQ8eQlR9lQeWTEvHKQe4KhC47RpwjWKI/WDxwZtE+6JqMdlEWT8B2ngjHDtIPnXqLUj7eH/ImvYV6iWto3KiqbR2PD29uclwjV/p5yNaFvJ4mAj/xMOK/5jHvLo+A+fYU/FOwTSFo6xjkCdz3gpVKzy2yeazMnGonXlZc8xjxOHFhyGeKMLGC7rdNnVN637v8kLaaKrisPR3anNmF3kIDS6mxq9v/QcwwsRKuYmvzGIgUcW+BhM3gOAvZxPA3g8gfw70QIDAQAB",
+  "description": "Minimal extension that calls raw chrome.debugger.attach on the active tab",
+  "permissions": ["debugger", "tabs"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["runner.html", "runner.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "chromium-debugger-attach-repro",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "Standalone Chromium chrome.debugger attach repro for pages embedding another extension in an iframe",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "repro": "tsx src/index.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "playwright": "^1.59.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  }
+}
